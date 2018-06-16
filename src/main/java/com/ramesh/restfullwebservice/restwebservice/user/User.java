@@ -1,11 +1,17 @@
 package com.ramesh.restfullwebservice.restwebservice.user;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 public class User {
     private Integer id;
+    @Size(min = 2, message = "name should at least two characters")
     private String name;
+    @Email
     private String email;
+    @Past
     private Date birthDate;
 
     public User(){}
