@@ -11,16 +11,16 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    public IUserDAO iUserDAO;
+    public IUserDAO service;
 
     @GetMapping(path = "/users")
     public List<User> getUsers(){
-        return iUserDAO.findAll();
+        return service.findAll();
     }
 
     @GetMapping(path = "/users/{userId}")
     public User getUser(@PathVariable int userId){
-        User user= iUserDAO.findOne(userId);
+        User user= service.findOne(userId);
         if (user == null){
             throw new UserNotFoundException("id-" +userId);
         }
@@ -28,11 +28,18 @@ public class UserController {
     }
     @PostMapping(path = "/users")
     public ResponseEntity<Object> createUser(@RequestBody User user){
-        User saveUser = iUserDAO.save(user);
+        User saveUser = service.save(user);
 
        URI loaction =  ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(saveUser.getId()).toUri();
         return ResponseEntity.created(loaction).build();
+    }
+    @DeleteMapping(path = "/users/{userId}")
+    public void deleteUser(@PathVariable int useId){
+        User user = service.deleteById(useId);
+        if (user == null){
+            throw new UserNotFoundException("id-"+useId);
+        }
     }
 }
