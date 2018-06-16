@@ -19,11 +19,10 @@ public class UserController {
     }
 
     @GetMapping(path = "/users/{userId}")
-    public User getUser(@PathVariable int userId)
-    {
+    public User getUser(@PathVariable int userId){
         User user= iUserDAO.findOne(userId);
         if (user == null){
-            throw new UserNotFoundException("id-" +id);
+            throw new UserNotFoundException("id-" +userId);
         }
         return user;
     }
